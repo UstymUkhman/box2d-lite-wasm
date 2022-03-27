@@ -1,0 +1,12 @@
+tmp
+logs
+pids
+
+*.log
+*.pid
+*.seed
+
+.idea
+.vscode
+.DS_Store
+.lock-wscript
