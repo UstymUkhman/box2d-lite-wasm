@@ -15,12 +15,12 @@ fn main() {
   println!("x: {} | y: {}", vec.x, vec.y);
   println!("Vector Length: {}", vec.len());
 
-  let mat = Matrix4::from_angle(0.5);
+  let mut mat = Matrix4::from_angle(0.5);
 
   println!("mat.col1.x: {} | mat.col1.y: {}", mat.col1.x, mat.col1.y);
   println!("mat.col2.x: {} | mat.col2.y: {}", mat.col2.x, mat.col2.y);
 
-  let mat = Matrix4::from_vectors(&Vector2::new(0.12, 0.25), &vec);
+  mat = Matrix4::from_vectors(&Vector2::new(0.12, 0.25), &vec);
 
   println!("mat.col1.x: {} | mat.col1.y: {}", mat.col1.x, mat.col1.y);
   println!("mat.col2.x: {} | mat.col2.y: {}", mat.col2.x, mat.col2.y);
@@ -40,5 +40,17 @@ fn main() {
   println!("vec.x: {} | vec.y: {}", vec.x, vec.y);
 
   vec *= 0.1;
+  println!("vec.x: {} | vec.y: {}", vec.x, vec.y);
+
+
+  let vec1 = Vector2::new(0.1, 0.2);
+  let vec2 = Vector2::new(0.2, 0.4);
+
+  vec = vec1 + vec2;
+
+  println!("vec.x: {} | vec.y: {}", vec.x, vec.y);
+
+  vec = vec * mat;
+
   println!("vec.x: {} | vec.y: {}", vec.x, vec.y);
 }
