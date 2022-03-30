@@ -2,6 +2,7 @@ use std::ops;
 
 pub mod vec2;
 pub mod mat4;
+pub mod math;
 
 use vec2::Vector2;
 use mat4::Matrix4;

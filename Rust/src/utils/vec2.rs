@@ -20,7 +20,7 @@ impl Vector2 {
 
   // f32 = Vector2.len()
   pub fn len(&self) -> f32 {
-    return (self.x * self.x + self.y * self.y).sqrt();
+    (self.x * self.x + self.y * self.y).sqrt()
   }
 }
 

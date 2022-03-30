@@ -1,6 +1,8 @@
 mod utils;
 
 // use core::f64::consts::PI;
+
+use crate::utils::math;
 use crate::utils::vec2::Vector2;
 use crate::utils::mat4::Matrix4;
 
@@ -25,6 +27,16 @@ fn main() {
   println!("mat.col1.x: {} | mat.col1.y: {}", mat.col1.x, mat.col1.y);
   println!("mat.col2.x: {} | mat.col2.y: {}", mat.col2.x, mat.col2.y);
 
+  mat = mat.transpose();
+
+  println!("mat.col1.x: {} | mat.col1.y: {}", mat.col1.x, mat.col1.y);
+  println!("mat.col2.x: {} | mat.col2.y: {}", mat.col2.x, mat.col2.y);
+
+  mat = mat.invert();
+
+  println!("mat.col1.x: {} | mat.col1.y: {}", mat.col1.x, mat.col1.y);
+  println!("mat.col2.x: {} | mat.col2.y: {}", mat.col2.x, mat.col2.y);
+
   println!("");
   println!("===== ===== =====");
   println!("");
@@ -43,8 +55,8 @@ fn main() {
   println!("vec.x: {} | vec.y: {}", vec.x, vec.y);
 
 
-  let vec1 = Vector2::new(0.1, 0.2);
-  let vec2 = Vector2::new(0.2, 0.4);
+  let mut vec1 = Vector2::new(0.1, 0.2);
+  let mut vec2 = Vector2::new(0.2, 0.4);
 
   vec = vec1 + vec2;
 
@@ -53,4 +65,13 @@ fn main() {
   vec = vec * mat;
 
   println!("vec.x: {} | vec.y: {}", vec.x, vec.y);
+
+  println!("");
+  println!("===== ===== =====");
+  println!("");
+
+  vec1 = Vector2::new(0.1, 0.2);
+  vec2 = Vector2::new(0.2, 0.4);
+
+  println!("dot: {}", math::dot(&vec1, &vec2));
 }
