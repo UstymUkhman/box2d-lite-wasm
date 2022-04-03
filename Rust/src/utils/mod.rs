@@ -7,18 +7,6 @@ pub mod math;
 use vec2::Vector2;
 use mat4::Matrix4;
 
-// Vector2 = Vector2 + Vector2
-impl ops::Add for Vector2 {
-  type Output = Self;
-
-  fn add(self, other: Self) -> Self {
-    Self {
-      x: self.x + other.x,
-      y: self.y + other.y
-    }
-  }
-}
-
 // Vector2 = Vector2 * Matrix4
 impl ops::Mul<Matrix4> for Vector2 {
   type Output = Self;

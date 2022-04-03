@@ -1,6 +1,8 @@
+use std::ops;
 use super::vec2::Vector2;
 
 // Matrix4 { col1: Vector2, col2: Vector2 }
+#[derive(Copy, Clone)]
 pub struct Matrix4 {
   pub col1: Vector2,
   pub col2: Vector2
@@ -37,6 +39,14 @@ impl Matrix4 {
     }
   }
 
+  // Matrix4 = Matrix4.abs()
+  pub fn abs(&mut self) -> Self {
+    return Matrix4::from_vectors(
+      &self.col1.abs(),
+      &self.col2.abs()
+    );
+  }
+
   // Matrix4 = Matrix4.transpose()
   pub fn transpose(self) -> Self {
     Self {
@@ -67,5 +77,33 @@ impl Matrix4 {
     inv.col2.y =  det * x1;
 
     return inv;
+  }
+}
+
+/**
+ * Operator Overloading
+ */
+
+// Matrix4 = Matrix4 + Matrix4
+impl ops::Add for Matrix4 {
+  type Output = Self;
+
+  fn add(self, other: Self) -> Self {
+    Self {
+      col1: self.col1 + other.col1,
+      col2: self.col2 + other.col2
+    }
+  }
+}
+
+// Matrix4 = Matrix4 * Matrix4
+impl ops::Mul<Matrix4> for Matrix4 {
+  type Output = Self;
+
+  fn mul(self, other: Self) -> Self {
+    return Self::from_vectors(
+      &(other.col1 * self),
+      &(other.col2 * self)
+    );
   }
 }

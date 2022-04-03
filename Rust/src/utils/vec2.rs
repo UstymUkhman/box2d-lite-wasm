@@ -1,6 +1,7 @@
 use std::ops;
 
 // Vector2 { x: f32, y: f32 }
+#[derive(Copy, Clone)]
 pub struct Vector2 {
   pub x: f32,
   pub y: f32
@@ -18,6 +19,14 @@ impl Vector2 {
     self.y = y;
   }
 
+  // Vector2 = Vector2.abs()
+  pub fn abs(&mut self) -> Self {
+    Self {
+      x: self.x.abs(),
+      y: self.y.abs()
+    }
+  }
+
   // f32 = Vector2.len()
   pub fn len(&self) -> f32 {
     (self.x * self.x + self.y * self.y).sqrt()
@@ -28,7 +37,7 @@ impl Vector2 {
  * Operator Overloading
  */
 
-// -Vector2
+// Vector2 = -Vector2
 impl ops::Neg for Vector2 {
   type Output = Self;
 
@@ -36,6 +45,18 @@ impl ops::Neg for Vector2 {
     Self {
       x: -self.x,
       y: -self.y
+    }
+  }
+}
+
+// Vector2 = Vector2 + Vector2
+impl ops::Add for Vector2 {
+  type Output = Self;
+
+  fn add(self, other: Self) -> Self {
+    Self {
+      x: self.x + other.x,
+      y: self.y + other.y
     }
   }
 }
@@ -48,11 +69,35 @@ impl ops::AddAssign for Vector2 {
   }
 }
 
+// Vector2 = Vector2 - Vector2
+impl ops::Sub for Vector2 {
+  type Output = Self;
+
+  fn sub(self, other: Self) -> Self {
+    Self {
+      x: self.x - other.x,
+      y: self.y - other.y
+    }
+  }
+}
+
 // Vector2 -= Vector2
 impl ops::SubAssign for Vector2 {
   fn sub_assign(&mut self, other: Self) {
     self.x -= other.x;
     self.y -= other.y;
+  }
+}
+
+// Vector2 = Vector2 * f32
+impl ops::Mul<f32> for Vector2 {
+  type Output = Self;
+
+  fn mul(self, other: f32) -> Self {
+    Self {
+      x: self.x * other,
+      y: self.y * other
+    }
   }
 }
 
