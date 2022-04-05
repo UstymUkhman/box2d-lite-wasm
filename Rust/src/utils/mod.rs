@@ -3,6 +3,8 @@ use std::ops;
 pub mod vec2;
 pub mod mat4;
 pub mod math;
+pub mod rand;
+pub mod cross;
 
 use vec2::Vector2;
 use mat4::Matrix4;
