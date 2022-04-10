@@ -1,106 +1,59 @@
 mod utils;
+mod body;
 // #[allow(dead_code)]
 // use core::f64::consts::PI;
 
-use crate::utils::rand;
-use crate::utils::math;
-use crate::utils::cross::*;
+use crate::body::Body;
+// use crate::utils::rand;
+// use crate::utils::math;
+// use crate::utils::cross::*;
 use crate::utils::vec2::Vector2;
-use crate::utils::mat4::Matrix4;
+// use crate::utils::mat4::Matrix4;
+
+fn print_body_data(body: &Body) {
+  println!("body.position: [x: {}, y: {}]", &body.position.x, &body.position.y);
+  println!("body.rotation: {}", &body.rotation);
+  println!("body.velocity: [x: {}, y: {}]", &body.velocity.x, &body.velocity.y);
+  println!("body.angular_velocity: {}", &body.angular_velocity);
+
+  println!("body.width: [x: {}, y: {}]", &body.width.x, &body.width.y);
+  println!("body.friction: {}", &body.friction);
+  println!("body.mass: {}", &body.mass);
+  println!("body.inverse_mass: {}", &body.inverse_mass);
+  println!("body.inertia: {}", &body.inertia);
+  println!("body.inverse_inertia: {}", &body.inverse_inertia);
+
+  println!("body.torque: {}", &body.torque);
+  println!("body.force: [x: {}, y: {}]", &body.force.x, &body.force.y);
+}
 
 fn main() {
-  let v1 = Vector2::new(0.9, 0.1);
-  let v2 = Vector2::new(0.2, 0.8);
+  let mut body = Body::new();
+  let force = Vector2::new(12.0, 5.0);
 
-  let f = Cross::prod(&v1, &v2);
-  println!("f: {}", f);
-
-  let v3 = Cross::prod(&v1, f);
-  println!("x: {}, y: {}", v3.x, v3.y);
-  
-  let v4 = Cross::prod(f, &v2);
-  println!("x: {}, y: {}", v4.x, v4.y);
-
-  let mut a = 1.2;
-  let mut b = 2.1;
-
-  math::swap(&mut a, &mut b);
-
-  println!("a: {}, b: {}", a, b);
-
-  let r1 = rand::random(());
-
-  println!("r1: {}", r1);
-  
-  let r2 = rand::random((-25.0, 50.0));
-
-  println!("r2: {}", r2);
-
-  let mut vec = Vector2::new(0.12, 0.25);
-
-  println!("x: {} | y: {}", vec.x, vec.y);
-  println!("Vector Length: {}", vec.len());
-
-  vec.set(0.5, 0.75);
-
-  println!("x: {} | y: {}", vec.x, vec.y);
-  println!("Vector Length: {}", vec.len());
-
-  let mut mat = Matrix4::from_angle(0.5);
-
-  println!("mat.col1.x: {} | mat.col1.y: {}", mat.col1.x, mat.col1.y);
-  println!("mat.col2.x: {} | mat.col2.y: {}", mat.col2.x, mat.col2.y);
-
-  mat = Matrix4::from_vectors(&Vector2::new(0.12, 0.25), &vec);
-
-  println!("mat.col1.x: {} | mat.col1.y: {}", mat.col1.x, mat.col1.y);
-  println!("mat.col2.x: {} | mat.col2.y: {}", mat.col2.x, mat.col2.y);
-
-  mat = mat.transpose();
-
-  println!("mat.col1.x: {} | mat.col1.y: {}", mat.col1.x, mat.col1.y);
-  println!("mat.col2.x: {} | mat.col2.y: {}", mat.col2.x, mat.col2.y);
-
-  mat = mat.invert();
-
-  println!("mat.col1.x: {} | mat.col1.y: {}", mat.col1.x, mat.col1.y);
-  println!("mat.col2.x: {} | mat.col2.y: {}", mat.col2.x, mat.col2.y);
-
-  println!("");
-  println!("===== ===== =====");
+  println!("");  
+  println!("=========================");  
   println!("");
 
-  let mut neg = Vector2::new(0.2, 0.8);
-  neg = -neg;
-  println!("neg.x: {} | neg.y: {}", neg.x, neg.y);
+  print_body_data(&body);
 
-  vec += Vector2::new(0.25, 0.5);
-  println!("vec.x: {} | vec.y: {}", vec.x, vec.y);
-
-  vec -= Vector2::new(0.5, 0.25);
-  println!("vec.x: {} | vec.y: {}", vec.x, vec.y);
-
-  vec *= 0.1;
-  println!("vec.x: {} | vec.y: {}", vec.x, vec.y);
-
-
-  let mut vec1 = Vector2::new(0.1, 0.2);
-  let mut vec2 = Vector2::new(0.2, 0.4);
-
-  vec = vec1 + vec2;
-
-  println!("vec.x: {} | vec.y: {}", vec.x, vec.y);
-
-  vec = vec * mat;
-
-  println!("vec.x: {} | vec.y: {}", vec.x, vec.y);
-
-  println!("");
-  println!("===== ===== =====");
+  println!("");  
+  println!("=========================");  
   println!("");
 
-  vec1 = Vector2::new(0.1, 0.2);
-  vec2 = Vector2::new(0.2, 0.4);
+  body.set(&Vector2::new(5.0, 5.0), 5.0);
 
-  println!("dot: {}", math::dot(&vec1, &vec2));
+  print_body_data(&body);
+
+  println!("");  
+  println!("=========================");  
+  println!("");
+
+  body.add_force(&force);
+
+  print_body_data(&body);
+
+  println!("");  
+  println!("=========================");  
+  println!("");
 }
