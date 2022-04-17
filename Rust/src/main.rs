@@ -1,9 +1,11 @@
 mod utils;
 mod body;
+mod joint;
 // #[allow(dead_code)]
-// use core::f64::consts::PI;
+use core::f32::consts::PI;
 
 use crate::body::Body;
+use crate::joint::Joint;
 // use crate::utils::rand;
 // use crate::utils::math;
 // use crate::utils::cross::*;
@@ -28,17 +30,18 @@ fn print_body_data(body: &Body) {
 }
 
 fn main() {
+  // Body
   let mut body = Body::new();
   let force = Vector2::new(12.0, 5.0);
 
   println!("");  
-  println!("=========================");  
+  println!("=========================");
   println!("");
 
   print_body_data(&body);
 
   println!("");  
-  println!("=========================");  
+  println!("=========================");
   println!("");
 
   body.set(&Vector2::new(5.0, 5.0), 5.0);
@@ -46,14 +49,41 @@ fn main() {
   print_body_data(&body);
 
   println!("");  
-  println!("=========================");  
+  println!("=========================");
   println!("");
 
   body.add_force(&force);
 
   print_body_data(&body);
 
-  println!("");  
-  println!("=========================");  
+  println!("");
+  println!("=========================");
+  println!("");
+
+  // Joint
+  let mut _body = Body::new();
+  let mut joint = Joint::new();
+  let anchor = Vector2::new(1.0, -1.0);
+
+  _body.set(&Vector2::new(1.0, 1.0), 0.0001);
+
+  _body.rotation = PI;
+  body.rotation = -PI;
+
+  joint.set(&body, &_body, &anchor);
+
+  println!("Joint.impulse: [x: {}, y: {}]", joint.impulse.x, joint.impulse.y);
+  
+  println!("");
+  println!("=========================");
+  println!("");
+
+  body.rotation = PI;
+  joint.apply_impulse();
+
+  println!("Joint.impulse: [x: {}, y: {}]", joint.impulse.x, joint.impulse.y);
+  
+  println!("");
+  println!("=========================");
   println!("");
 }

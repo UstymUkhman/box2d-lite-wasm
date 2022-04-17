@@ -1,5 +1,6 @@
 use crate::utils::vec2::Vector2;
 
+#[derive(Copy, Clone)]
 pub struct Body {
   pub position: Vector2,
   pub rotation: f32,  
