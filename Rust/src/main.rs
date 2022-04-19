@@ -1,4 +1,6 @@
 mod utils;
+mod world;
+
 mod body;
 mod joint;
 // #[allow(dead_code)]
@@ -72,6 +74,8 @@ fn main() {
 
   joint.set(&body, &_body, &anchor);
 
+  joint.pre_step(0.0);
+
   println!("Joint.impulse: [x: {}, y: {}]", joint.impulse.x, joint.impulse.y);
   
   println!("");
@@ -79,6 +83,7 @@ fn main() {
   println!("");
 
   body.rotation = PI;
+  joint.pre_step(0.06);
   joint.apply_impulse();
 
   println!("Joint.impulse: [x: {}, y: {}]", joint.impulse.x, joint.impulse.y);

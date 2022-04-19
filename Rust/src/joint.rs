@@ -1,4 +1,5 @@
 use crate::body::Body;
+use crate::world::World;
 use crate::utils::cross::*;
 use crate::utils::vec2::Vector2;
 use crate::utils::mat4::Matrix4;
@@ -59,9 +60,66 @@ impl Joint {
     self.softness = 0.0;
   }
 
-  /* pub fn pre_step(&mut self, inv_dt: f32) {
+  pub fn pre_step(&mut self, inv_dt: f32) {
+    // Pre-compute anchors, mass matrix, and bias.
+    let mat_rot1 = Matrix4::from_angle(self.body1.rotation);
+    let mat_rot2 = Matrix4::from_angle(self.body2.rotation);
 
-  } */
+    let vec_rot_1 = self.anchor1 * mat_rot1;
+    let vec_rot_2 = self.anchor2 * mat_rot2;
+
+    let mut k1 = Matrix4::new();
+    k1.col1.x = self.body1.inverse_mass + self.body2.inverse_mass;
+    k1.col2.x = 0.0;
+    k1.col1.y = 0.0;
+    k1.col2.y = self.body1.inverse_mass + self.body2.inverse_mass;
+
+    let mut k2 = Matrix4::new();
+    k2.col1.x =  self.body1.inverse_inertia * vec_rot_1.y * vec_rot_1.y;
+    k2.col2.x = -self.body1.inverse_inertia * vec_rot_1.x * vec_rot_1.y;
+    k2.col1.y = -self.body1.inverse_inertia * vec_rot_1.x * vec_rot_1.y;
+    k2.col2.y =  self.body1.inverse_inertia * vec_rot_1.x * vec_rot_1.x;
+
+    let mut k3 = Matrix4::new();
+    k3.col1.x =  self.body2.inverse_inertia * vec_rot_2.y * vec_rot_2.y;
+    k3.col2.x = -self.body2.inverse_inertia * vec_rot_2.x * vec_rot_2.y;
+    k3.col1.y = -self.body2.inverse_inertia * vec_rot_2.x * vec_rot_2.y;
+    k3.col2.y =  self.body2.inverse_inertia * vec_rot_2.x * vec_rot_2.x;
+    
+    let mut k = k1 + k2 + k3;
+    k.col1.x += self.softness;
+    k.col2.y += self.softness;
+
+    self.matrix = k.invert();
+
+    if World::POSITION_CORRECTION {
+      let p1 = self.body1.position + vec_rot_1;
+      let p2 = self.body2.position + vec_rot_2;
+
+      self.bias = (p2 - p1) * -self.bias_factor * inv_dt;
+    }
+    
+    else {
+      self.bias.set(0.0, 0.0);
+    }
+
+    if World::WARM_STARTING {
+      // Apply accumulated impulse.
+      self.body1.velocity -= self.impulse * self.body1.inverse_mass;
+      self.body1.angular_velocity -= self.body1.inverse_inertia * Cross::prod(
+        &vec_rot_1, &self.impulse
+      );
+
+      self.body2.velocity += self.impulse * self.body2.inverse_mass;
+      self.body2.angular_velocity += self.body2.inverse_inertia * Cross::prod(
+        &vec_rot_2, &self.impulse
+      );
+    }
+
+    else {
+      self.impulse.set(0.0, 0.0);
+    }
+  }
 
   pub fn apply_impulse(&mut self) {
     let ang_vel_x_rot1 = Cross::prod(self.body1.angular_velocity, &self.rotation1);
