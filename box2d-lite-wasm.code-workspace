@@ -1,10 +1,10 @@
 {
-	"settings": {
-		"git.ignoreLimitWarning": true
+  "settings": {
+    "editor.bracketPairColorization.enabled": false
   },
 
   "folders": [{
-		"name": "Box2D-Lite WASM",
+    "name": "Box2D-Lite WASM",
     "path": "."
-	}]
+  }]
 }
