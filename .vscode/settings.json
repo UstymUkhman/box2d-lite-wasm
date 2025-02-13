@@ -1,5 +1,6 @@
 {
   "[zig]": {
-    "editor.formatOnSave": false
+    "editor.formatOnSave": false,
+    "editor.indentSize": 4
   }
 }
