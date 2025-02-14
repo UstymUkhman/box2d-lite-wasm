@@ -1,5 +1,4 @@
 const std = @import("std");
-const Vec2 = @import("vec2.zig").Vec2;
 
 pub const Random = struct
 {
@@ -34,11 +33,6 @@ pub inline fn sign(value: f32) f32
     return if (value > 0) 1 else -1;
 }
 
-pub fn dot(a: *Vec2, b: *Vec2) f32
-{
-    return a.x * b.x + a.y * b.y;
-}
-
 test "random functions"
 {
     var random = Random {};
@@ -55,7 +49,7 @@ test "random functions"
     try std.testing.expect(rnd > 0 and rnd < 10);
 }
 
-test "math functions"
+test "basic functions"
 {
     const less = clamp(2, -1, 1);
     const more = clamp(-0.5, 0, 1);
@@ -68,8 +62,4 @@ test "math functions"
 
     a = sign(a); b = sign(b);
     try std.testing.expect(a == -1 and b == 1);
-
-    var v1 = Vec2 { .x = 1, .y = 1 };
-    var v2 = Vec2 { .x = 2, .y = 2 };
-    try std.testing.expect(dot(&v1, &v2) == 4);
 }
