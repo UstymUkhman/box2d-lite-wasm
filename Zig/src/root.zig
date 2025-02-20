@@ -1,2 +1,4 @@
 const std = @import("std");
-pub const Vec2 = @import("utils/vec2.zig").Vec2;
+pub const vec = @import("utils/vec2.zig");
+pub const mat = @import("utils/mat4.zig");
+pub const math = @import("utils/math.zig");
