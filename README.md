@@ -32,8 +32,8 @@ zig run ./src/main.zig
 # Build
 zig build
 
-# Run .exe
-./zig-out/bin/box2d-lite-wasm.exe
+# Run executable
+./zig-out/bin/box2d-lite-wasm[.exe]
 ```
 
 ## License

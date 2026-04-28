@@ -4,11 +4,11 @@ const Mat4 = @import("mat4.zig").Mat4;
 
 pub const Random = struct
 {
-    prng: std.rand.DefaultPrng = undefined,
+    prng: std.Random.DefaultPrng = undefined,
 
     pub fn init(this: *Random, seed: ?u64) void
     {
-        this.prng = std.rand.DefaultPrng.init(
+        this.prng = std.Random.DefaultPrng.init(
             seed orelse @as(u64, @bitCast(std.time.milliTimestamp()))
         );
     }
@@ -52,7 +52,7 @@ pub inline fn sign(value: f32) f32
 test "random functions"
 {
     var random = Random {};
-    try std.testing.expect(@TypeOf(random.prng) == std.rand.DefaultPrng);
+    try std.testing.expect(@TypeOf(random.prng) == std.Random.DefaultPrng);
 
     random.init(null);
     var rnd = random.inRange(null, null);

@@ -40,10 +40,10 @@ pub const Vec2 = packed struct
         this.x *= multiplicand.x; this.y *= multiplicand.y;
     }
 
-    // pub fn abs(this: *Vec2) Vec2
-    // {
-    //     return Vec2 { .x = @abs(this.x), .y = @abs(this.y) };
-    // }
+    pub fn abs(this: *Vec2) void
+    {
+        this.x = @abs(this.x); this.y = @abs(this.y);
+    }
 
     pub fn neg(this: *Vec2) Vec2
     {
@@ -108,11 +108,11 @@ test "basic functionality"
     vec.mulAssign(&v);
     try expect(vec.x == 15 and vec.y == -10);
 
-    // const abs = vec.abs();
-    // try expect(abs.x == 15 and abs.y == 10);
+    vec.abs();
+    try expect(vec.x == 15 and vec.y == 10);
 
     const neg = vec.neg();
-    try expect(neg.x == -15 and neg.y == 10);
+    try expect(neg.x == -15 and neg.y == -10);
 
     const len = vec.len();
     try expect(len == 18.027756);

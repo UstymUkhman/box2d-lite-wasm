@@ -85,12 +85,11 @@ pub const Mat4 = packed struct
         return mat;
     }
 
-    // pub fn abs(this: *Mat4) void
-    // {
-    //     var col1 = this.col1.abs();
-    //     var col2 = this.col2.abs();
-    //     this.fromVectors(&col1, &col2);
-    // }
+    pub fn abs(this: *Mat4) void
+    {
+        this.col1.abs(); this.col2.abs();
+        this.fromVectors(&this.col1, &this.col2);
+    }
 };
 
 test "basic functionality"
@@ -158,14 +157,14 @@ test "basic functionality"
         mat.col2.y == 16
     );
 
-    // mat.abs();
+    mat.abs();
 
-    // try std.testing.expect(
-    //     mat.col1.x == 32 and
-    //     mat.col1.y ==  2 and
-    //     mat.col2.x ==  8 and
-    //     mat.col2.y == 16
-    // );
+    try std.testing.expect(
+        mat.col1.x == 32 and
+        mat.col1.y ==  2 and
+        mat.col2.x ==  8 and
+        mat.col2.y == 16
+    );
 
     mat.fromAngle(1);
     mat = mat.invert();
