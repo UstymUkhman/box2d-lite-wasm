@@ -10,6 +10,11 @@ pub const Vec2 = packed struct
         this.x = x; this.y = y;
     }
 
+    pub fn assign(this: *Vec2, assignor: *const Vec2) void
+    {
+        this.x = assignor.x; this.y = assignor.y;
+    }
+
     pub fn add(this: *Vec2, addend: *const Vec2) Vec2
     {
         return Vec2 { .x = this.x + addend.x, .y = this.y + addend.y };
@@ -81,10 +86,14 @@ test "basic functionality"
     var vec = Vec2 {};
     try expect(vec.x == 0 and vec.y == 0);
 
-    vec.set(5, 8);
+    var v = Vec2 {};
+    v.set(5, 8);
+    try expect(v.x == 5 and v.y == 8);
+
+    vec.assign(&v);
     try expect(vec.x == 5 and vec.y == 8);
 
-    var v = Vec2 { .x = 7, .y = 8 };
+    v = Vec2 { .x = 7, .y = 8 };
     const sum = vec.add(&v);
     try expect(sum.x == 12 and sum.y == 16);
 
