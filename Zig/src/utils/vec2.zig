@@ -76,6 +76,11 @@ pub inline fn floatCrossVec2(f: f32, v: *const Vec2) Vec2
     return Vec2 { .x = v.y * -f, .y = v.x * f };
 }
 
+pub inline fn vec2MulFloat(v: *const Vec2, f: f32) Vec2
+{
+    return Vec2 { .x = v.x * f, .y = v.y * f };
+}
+
 pub inline fn dot(a: *const Vec2, b: *const Vec2) f32
 {
     return a.x * b.x + a.y * b.y;
@@ -129,7 +134,10 @@ test "basic functionality"
 
 test "math functions"
 {
-    var v1 = Vec2 { .x = 2, .y = 4 };
+    var v1 = Vec2 { .x = 1, .y = 2 };
+    v1 = vec2MulFloat(&v1, 2);
+    try expect(v1.x == 2 and v1.y == 4);
+
     v1 = floatCrossVec2(5, &v1);
     try expect(v1.x == -20 and v1.y == 10);
 
