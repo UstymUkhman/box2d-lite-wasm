@@ -1,7 +1,7 @@
 const std = @import("std");
 const Vec2 = @import("vec2.zig").Vec2;
 
-pub const Mat4 = packed struct
+pub const Mat4 = struct
 {
     col1: Vec2 = Vec2 {},
     col2: Vec2 = Vec2 {},

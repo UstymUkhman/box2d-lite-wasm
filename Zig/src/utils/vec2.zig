@@ -1,6 +1,6 @@
 const expect = @import("std").testing.expect;
 
-pub const Vec2 = packed struct
+pub const Vec2 = struct
 {
     x: f32 = 0,
     y: f32 = 0,

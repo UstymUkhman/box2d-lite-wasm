@@ -6,10 +6,10 @@ pub const Random = struct
 {
     prng: std.Random.DefaultPrng = undefined,
 
-    pub fn init(this: *Random, seed: ?u64) void
+    pub fn init(this: *Random, io: std.Io, seed: ?u64) void
     {
         this.prng = std.Random.DefaultPrng.init(
-            seed orelse @as(u64, @bitCast(std.time.milliTimestamp()))
+            seed orelse @as(u64, @bitCast(std.Io.Clock.now(.real, io).toMilliseconds()))
         );
     }
 
@@ -54,7 +54,7 @@ test "random functions"
     var random = Random {};
     try std.testing.expect(@TypeOf(random.prng) == std.Random.DefaultPrng);
 
-    random.init(null);
+    random.init(std.testing.io, null);
     var rnd = random.inRange(null, null);
     try std.testing.expect(rnd > -1 and rnd < 1);
 

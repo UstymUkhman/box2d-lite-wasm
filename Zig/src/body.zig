@@ -4,23 +4,23 @@ const expect = @import("std").testing.expect;
 
 pub const Body = struct
 {
-    position: Vec2 = Vec2 { .x = 0, .y = 0 },
-    rotation: f32 = 0,
-
-    velocity: Vec2 = Vec2 { .x = 0, .y = 0 },
-    angular_velocity: f32 = 0,
-
-    width: Vec2 = Vec2 { .x = 1, .y = 1 },
-    friction: f32 = 0.2,
-
-    force: Vec2 = Vec2 { .x = 0, .y = 0 },
-    torque: f32 = 0,
-
-    mass: f32 = std.math.floatMax(f32),
-    inv_mass: f32 = 0,
-
-    i: f32 = std.math.floatMax(f32),
     inv_i: f32 = 0,
+    i: f32 = std.math.floatMax(f32),
+
+    inv_mass: f32 = 0,
+    mass: f32 = std.math.floatMax(f32),
+
+    friction: f32 = 0.2,
+    width: Vec2 = Vec2 { .x = 1, .y = 1 },
+
+    torque: f32 = 0,
+    force: Vec2 = Vec2 { .x = 0, .y = 0 },
+
+    rotation: f32 = 0,
+    position: Vec2 = Vec2 { .x = 0, .y = 0 },
+
+    angular_velocity: f32 = 0,
+    velocity: Vec2 = Vec2 { .x = 0, .y = 0 },
 
     pub fn set(this: *Body, width: *const Vec2, mass: f32) void
     {
