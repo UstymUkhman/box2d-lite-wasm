@@ -26,6 +26,7 @@ zig test ./src/utils/vec2.zig
 zig test ./src/utils/mat4.zig
 zig test ./src/utils/math.zig
 zig test ./src/body.zig
+zig test ./src/joint.zig
 
 # Run
 zig run ./src/main.zig
