@@ -2,8 +2,12 @@ const std = @import("std");
 const Vec2 = @import("./root.zig").vec.Vec2;
 const expect = @import("std").testing.expect;
 
+var id: u64 = 0;
+
 pub const Body = struct
 {
+    id: u64,
+
     inv_i: f32 = 0,
     i: f32 = std.math.floatMax(f32),
 
@@ -31,7 +35,7 @@ pub const Body = struct
         this.angular_velocity = 0;
 
         this.width.assign(width);
-        this.friction = 0;
+        this.friction = 0.2;
 
         this.force.set(0, 0);
         this.torque = 0;
@@ -60,7 +64,7 @@ pub const Body = struct
 
 test "basic functionality"
 {
-    var body = Body {};
+    var body = Body { .id = 0 };
     try expect(body.position.x == 0 and body.position.y == 0 and body.rotation == 0);
     try expect(body.velocity.x == 0 and body.velocity.y == 0 and body.angular_velocity == 0);
     try expect(body.width.x == 1 and body.width.y == 1 and body.friction == 0.2);

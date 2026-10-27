@@ -13,7 +13,7 @@ pub const Joint = struct
     m: Mat4 = Mat4 {},
 
     softness:    f32 = 0,
-    bias_factor: f32 = 0,
+    bias_factor: f32 = 0.2,
 
     body1: *Body = undefined,
     body2: *Body = undefined,
@@ -134,8 +134,8 @@ pub const Joint = struct
 
 test "basic functionality"
 {
-    var body = Body {};
     var joint = Joint {};
+    var body = Body { .id = 0 };
     var v2 = Vec2 { .x = 1, .y = 1 };
 
     body.set(&v2, 1);

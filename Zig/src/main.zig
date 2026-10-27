@@ -6,7 +6,7 @@ pub fn main() void
     const vec = lib.vec.Vec2 {};
     std.debug.print("vec {{ .x = {d}, .y = {d} }}\n", .{ vec.x, vec.y });
 
-    var body = lib.body.Body {};
+    var body = lib.body.Body { .id = 0 };
     std.debug.print("body {{ .mass = {}, .inv_mass = {} }}\n", .{ body.mass, body.inv_mass });
     std.debug.print("body {{ .i = {}, .inv_i = {} }}\n", .{ body.i, body.inv_i });
 
@@ -17,4 +17,10 @@ pub fn main() void
     // Arbiter
     // World
     // Collide
+
+    var arbiter = lib.arbiter.Arbiter {};
+    arbiter.set(&body, &body);
+
+    std.debug.print("num_contacts {{ .num_contacts = {} }}\n", .{ arbiter.num_contacts });
+    std.debug.print("friction {{ .friction = {} }}\n", .{ arbiter.friction });
 }

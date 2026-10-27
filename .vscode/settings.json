@@ -1,8 +1,0 @@
-{
-  "[zig]": {
-    "editor.bracketPairColorization.enabled": false,
-    "editor.formatOnSave": false,
-    "editor.indentSize": 4,
-    "editor.tabSize": 4
-  }
-}
