@@ -14,13 +14,9 @@ pub fn main() void
     std.debug.print("body {{ .mass = {}, .inv_mass = {} }}\n", .{ body.mass, body.inv_mass });
     std.debug.print("body {{ .i = {}, .inv_i = {} }}\n", .{ body.i, body.inv_i });
 
-    // Arbiter
+    const arbiter = lib.arbiter.Arbiter.init(&body, &body);
+    std.debug.print("arbiter {{ .num_contacts = {}, .friction = {} }}\n", .{ arbiter.num_contacts, arbiter.friction });
+
     // World
     // Collide
-
-    var arbiter = lib.arbiter.Arbiter {};
-    arbiter.set(&body, &body);
-
-    std.debug.print("num_contacts {{ .num_contacts = {} }}\n", .{ arbiter.num_contacts });
-    std.debug.print("friction {{ .friction = {} }}\n", .{ arbiter.friction });
 }
