@@ -5,6 +5,7 @@ const floatCrossVec2 = vec.floatCrossVec2;
 
 const expect = @import("std").testing.expect;
 const Mat4 = @import("./root.zig").mat.Mat4;
+const World = @import("world.zig").World;
 const Body = @import("body.zig").Body;
 const Vec2 = vec.Vec2;
 
@@ -88,22 +89,22 @@ pub const Joint = struct
         var p2 = this.body2.position.add(&this.r2);
         const dp = p2.sub(&p1);
 
-        if (false) // world.position_correction)
+        if (World.position_correction)
         {
-            this.bias = vec2MulFloat(vec2MulFloat(dp, inv_dt), -this.bias_factor);
+            this.bias = vec2MulFloat(&vec2MulFloat(&dp, inv_dt), -this.bias_factor);
         }
         else
         {
             this.bias.set(0, 0);
         }
 
-        if (false) // world.warm_starting)
+        if (World.warm_starting)
         {
-            this.body1.velocity.subAssign(vec2MulFloat(this.impulse, this.body1.inv_mass));
-            this.body1.angular_velocity -= this.body1.inv_i * vec2CrossVec2(this.r1, this.impulse);
+            this.body1.velocity.subAssign(&vec2MulFloat(&this.impulse, this.body1.inv_mass));
+            this.body1.angular_velocity -= this.body1.inv_i * vec2CrossVec2(&this.r1, &this.impulse);
 
-            this.body2.velocity.addAssign(vec2MulFloat(this.impulse, this.body2.inv_mass));
-            this.body2.angular_velocity += this.body2.inv_i * vec2CrossVec2(this.r2, this.impulse);
+            this.body2.velocity.addAssign(&vec2MulFloat(&this.impulse, this.body2.inv_mass));
+            this.body2.angular_velocity += this.body2.inv_i * vec2CrossVec2(&this.r2, &this.impulse);
         }
         else
         {

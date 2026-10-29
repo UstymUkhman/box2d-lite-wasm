@@ -1,5 +1,6 @@
 const vec = @import("./root.zig").vec;
 const Body = @import("body.zig").Body;
+const World = @import("world.zig").World;
 
 const expect = @import("std").testing.expect;
 const collide = @import("collide.zig").collide;
@@ -46,7 +47,7 @@ pub const Contact = struct
     position: Vec2 = Vec2 { .x = 0, .y = 0 },
 };
 
-const ArbiterKey = struct
+pub const ArbiterKey = struct
 {
     body1: *Body = undefined,
     body2: *Body = undefined,
@@ -124,7 +125,7 @@ pub const Arbiter = struct
                 merged_contracts[n] = c_new;
                 var m = merged_contracts[n];
 
-                if (false) // world.warm_starting)
+                if (World.warm_starting)
                 {
                     const c_old = this.contacts[@intCast(c)];
 
@@ -155,7 +156,7 @@ pub const Arbiter = struct
 
     pub fn pre_step(this: *Arbiter, inv_dt: f32) void
     {
-        const k_bias_factor = 0.0; // if (world.position_correction) 0.2 orelse 0.0;
+        const k_bias_factor = if (World.position_correction) 0.2 else 0.0;
         const k_allowed_penetration = 0.01;
 
         for (0..this.num_contacts) |c|
@@ -183,16 +184,16 @@ pub const Arbiter = struct
 
             contract.bias = -k_bias_factor * inv_dt * @min(0, contract.separation + k_allowed_penetration);
 
-            if (false) // world.accumulate_impulses)
+            if (World.accumulate_impulses)
             {
-                const p = vec2MulFloat(contract.normal, contract.normal_impulse)
-                    .add(vec2MulFloat(tangent, contract.tangent_impulse));
+                var p = vec2MulFloat(&contract.normal, contract.normal_impulse);
+                p.addAssign(&vec2MulFloat(&tangent, contract.tangent_impulse));
 
-                this.body1.velocity.subAssign(vec2MulFloat(p, this.body1.inv_mass));
-                this.body1.angular_velocity -= this.body1.inv_i * vec2CrossVec2(r1, p);
+                this.body1.velocity.subAssign(&vec2MulFloat(&p, this.body1.inv_mass));
+                this.body1.angular_velocity -= this.body1.inv_i * vec2CrossVec2(&r1, &p);
 
-                this.body2.velocity.addAssign(vec2MulFloat(p, this.body2.inv_mass));
-                this.body2.angular_velocity += this.body2.inv_i * vec2CrossVec2(r2, p);
+                this.body2.velocity.addAssign(&vec2MulFloat(&p, this.body2.inv_mass));
+                this.body2.angular_velocity += this.body2.inv_i * vec2CrossVec2(&r2, &p);
             }
         }
     }
@@ -216,7 +217,7 @@ pub const Arbiter = struct
             const vn = dot(&dv, &contract.normal);
             var dPn = contract.mass_normal * (-vn + contract.bias);
 
-            if (false) // world.accumulate_impulses)
+            if (World.accumulate_impulses)
             {
                 const pn0 = contract.normal_impulse;
                 contract.normal_impulse = @max(pn0 + dPn, 0);
@@ -243,7 +244,7 @@ pub const Arbiter = struct
             const vt = dot(&dv, &tangent);
             var dPt = contract.mass_tangent * -vt;
 
-            if (false) // world.accumulate_impulses)
+            if (World.accumulate_impulses)
             {
                 const maxPt = this.friction * contract.normal_impulse;
                 const old_tangent_impulse = contract.tangent_impulse;
