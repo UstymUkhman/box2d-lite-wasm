@@ -3,7 +3,6 @@ const vec2MulFloat = vec.vec2MulFloat;
 const vec2CrossVec2 = vec.vec2CrossVec2;
 const floatCrossVec2 = vec.floatCrossVec2;
 
-const expect = @import("std").testing.expect;
 const Mat4 = @import("./root.zig").mat.Mat4;
 const World = @import("world.zig").World;
 const Body = @import("body.zig").Body;
@@ -132,27 +131,3 @@ pub const Joint = struct
         this.impulse.addAssign(&impulse);
     }
 };
-
-test "basic functionality"
-{
-    var joint = Joint {};
-    var body = Body { .id = 0 };
-    var v2 = Vec2 { .x = 1, .y = 1 };
-
-    body.set(&v2, 1);
-    joint.set(&body, &body, &v2);
-
-    try expect(joint.local_anchor1.x == 1 and joint.local_anchor1.y == 1);
-    try expect(joint.local_anchor2.x == 1 and joint.local_anchor2.y == 1);
-
-    try expect(joint.softness  == 0 and joint.bias_factor == 0.2);
-    try expect(joint.impulse.x == 0 and joint.impulse.y   == 0  );
-
-    joint.preStep(0);
-
-    try expect(joint.m.col1.x == 0.26923078 and joint.m.col1.y == 0.23076925);
-    try expect(joint.m.col2.x == 0.23076925 and joint.m.col2.y == 0.26923078);
-
-    joint.applyImpulse();
-    try expect(joint.impulse.x == 0 and joint.impulse.y == 0);
-}

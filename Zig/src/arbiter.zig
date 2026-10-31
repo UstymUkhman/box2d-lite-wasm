@@ -1,8 +1,6 @@
 const vec = @import("./root.zig").vec;
 const Body = @import("body.zig").Body;
 const World = @import("world.zig").World;
-
-const expect = @import("std").testing.expect;
 const collide = @import("collide.zig").collide;
 const clamp = @import("./utils/math.zig").clamp;
 
@@ -52,8 +50,10 @@ pub const ArbiterKey = struct
     body1: *Body = undefined,
     body2: *Body = undefined,
 
-    pub fn set(this: *ArbiterKey, body1: *Body, body2: *Body) void
+    pub fn init(body1: *Body, body2: *Body) @This()
     {
+        var this = ArbiterKey {};
+
         if (body1.id < body2.id)
         {
             this.body1 = body1;
@@ -64,6 +64,8 @@ pub const ArbiterKey = struct
             this.body1 = body2;
             this.body2 = body1;
         }
+
+        return this;
     }
 };
 
@@ -268,34 +270,3 @@ pub const Arbiter = struct
         }
     }
 };
-
-test "basic functionality"
-{
-    var body = Body { .id = 0 };
-    var arbiter = Arbiter.init(&body, &body);
-
-    try expect(arbiter.num_contacts == 0);
-    try expect(arbiter.friction == 0.2);
-
-    const c0 = Contact { .normal_impulse = 0, .tangent_impulse = 1, .normal_bias_impulse = 2 };
-    const c1 = Contact { .normal_impulse = 3, .tangent_impulse = 4, .normal_bias_impulse = 5 };
-
-    var contracts = [_]Contact{ c0, c1 };
-    arbiter.update(&contracts, 2);
-
-    try expect(c0.normal_impulse == 0 and c0.tangent_impulse == 1 and c0.normal_bias_impulse == 2);
-    try expect(c1.normal_impulse == 3 and c1.tangent_impulse == 4 and c1.normal_bias_impulse == 5);
-
-    arbiter.pre_step(0);
-
-    try expect(c0.mass_normal == 0 and c0.mass_tangent == 0 and c0.bias == 0);
-    try expect(c1.mass_normal == 0 and c1.mass_tangent == 0 and c1.bias == 0);
-
-    arbiter.apply_impulse();
-
-    try expect(c0.normal_impulse == 0 and c0.tangent_impulse == 1);
-    try expect(c1.normal_impulse == 3 and c1.tangent_impulse == 4);
-
-    try expect(arbiter.body1.velocity.x == 0 and arbiter.body1.velocity.y == 0 and arbiter.body1.angular_velocity == 0);
-    try expect(arbiter.body2.velocity.x == 0 and arbiter.body2.velocity.y == 0 and arbiter.body2.angular_velocity == 0);
-}

@@ -1,7 +1,7 @@
 const Contact = @import("arbiter.zig").Contact;
 const Body = @import("body.zig").Body;
 
-pub fn collide(contacts: [*]Contact, body1: *Body, body2: *Body) usize
+pub fn collide(contacts: [*]Contact, body1: *const Body, body2: *const Body) usize
 {
     _ = contacts;
     _ = body1;
